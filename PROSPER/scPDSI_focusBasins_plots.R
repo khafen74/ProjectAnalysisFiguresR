@@ -154,7 +154,7 @@ for (i in 1:length(basinnames))
   
   if (i==1)
   {
-    legend("topleft", legend = c("Dry field observations", "wet field observations"),
+    legend("topleft", legend = c("Dry field observations", "Wet field observations"),
            fill = c("gray60", "gray40"),
            cex=0.8,
            border = c(NA,NA),
