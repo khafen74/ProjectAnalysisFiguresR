@@ -16,7 +16,8 @@ dat <- read.csv(fnDA)
 #First calculate some additional metrics
 dat$perDiff <- dat$wyPer - dat$perctl
 dat$pdsiDiff <- dat$wyPDSI - dat$quad_mean
-dat$misclass <- ifelse((dat$FCODE==46006|dat$FCODE==55800))
+dat$misclass <- ifelse(((dat$FCODE==46006|dat$FCODE==55800)&dat$Category=="Dry")|
+                         ((dat$FCODE==46003|dat$FCODE==46007)&dat$Category=="Wet"),1,0)
 
 #subset data
 datAugOct <- subset(dat, dat$Month > 7 & dat$Month < 11)
