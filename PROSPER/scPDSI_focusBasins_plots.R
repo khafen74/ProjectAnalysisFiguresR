@@ -183,7 +183,7 @@ for (i in 1:length(basinnames))
                    col = "gray40", border=NA)
   
   axis(side=4, at = seq(0, round(ceiling(ymax*10)/10, digits = 2)
-                        , by = round(ymax/3, digits=2)))
+                        , by = round(ymax/3, digits=2)), las=1)
   #mtext(text = "Density", side = 4, line = 2.5, cex = 0.7)
   
   par(new=T)
@@ -204,7 +204,7 @@ for (i in 1:length(basinnames))
   plotdf <- plotdf[order(x),]
   
   plot(plotdf$x, plotdf$y, type="l", xlim = c(yearStart, yearEnd), col="gray", lwd=1,
-       ylab = NA, xlab = NA, main=basinnames[i], ylim = c(-4,4))        
+       ylab = NA, xlab = NA, main=basinnames[i], ylim = c(-4,4), las=1)        
   
   datPoly <-plotdf
   datPoly <- subset(datPoly, datPoly$y >= 0)

@@ -8,7 +8,7 @@ library(rgdal)
 
 setwd("C:\\konrad\\USGS\\PROSPER_NHD\\data\\PDSI\\NETCDF")
 fn <- "scpdsi_wymean.nc"
-rasdat <- brick(fn)[]
+rasdat <- brick(fn)
 
 # Get zonal stats ---------------------------------------------------------
 
@@ -26,6 +26,70 @@ for (i in 1:13)
 
 plot(df$year, df$scpdsi, type = "l", xlab = "Water Year", ylab = "scPDSI", main = "Mean scPDSI for CRB")
 lines(df$year, rep(0,nrow(df)), col="gray")
+
+
+# Figure ------------------------------------------------------------------
+
+dev.off()
+
+width = 4
+height = 3.5
+units = 'in'
+pointsize = 12
+res = 600
+bg="white"
+filename = "scPDSI_CRB.pdf"
+setwd("C:\\konrad\\USGS\\PROSPER\\figs")
+pdf(file=filename, width=width, height=height, bg=bg)
+
+yearStart <- 2004
+yearEnd <- 2016
+
+datPlot <- df
+x <- df$year
+y <- df$scpdsi
+for (i in 1:(length(y)-1))
+{
+  if ((y[i]<0.0&y[i+1]>0.0) | (y[i]>0.0&y[i+1]<0.0))
+  {
+    newx <- x[i] + (abs(y[i]))/(abs(y[i])+abs(y[i+1]))
+    x <- append(x, newx, after=length(x))
+    y <- append(y, 0.0, after=length(y))
+  }
+}
+plotdf <- data.frame(x,y)
+plotdf <- plotdf[order(x),]
+
+plot(plotdf$x, plotdf$y, type="l", xlim = c(yearStart, yearEnd), col="gray", lwd=1,
+     ylab = NA, xlab = NA, main=NA, ylim = c(-4,4), las=1)        
+
+datPoly <-plotdf
+datPoly <- subset(datPoly, datPoly$y >= 0)
+ypos.poly <- c(datPoly$y, min(datPoly$y), min(datPoly$y))                     
+ypos.poly <- c(datPoly$y, 0, 0)
+# x.poly <- c(datPoly$x, datPoly$x[nrow(datPoly)], datPoly$x[1])
+x.poly <- c(datPoly$x, yearEnd, yearStart)
+polygon(x.poly, ypos.poly, col=rgb(30/255,144/255,1,alpha = 0.35), 
+        border=rgb(30/255,144/255,1,alpha = 0.8), lwd = 0.5)
+
+datPoly <-plotdf
+datPoly <- subset(datPoly, datPoly$y <= 0)
+yneg.poly <- c(datPoly$y, min(datPoly$y), min(datPoly$y))                     
+yneg.poly <- c(datPoly$y, 0, 0)
+# x.poly <- c(datPoly$x, datPoly$x[nrow(datPoly)], datPoly$x[1])
+x.poly <- c(datPoly$x, yearEnd, yearStart)
+polygon(x.poly, yneg.poly, col=rgb(220/255,20/255,60/255,alpha = 0.35), 
+        border=rgb(220/255,20/255,60/255,alpha = 0.8), lwd = 0.5)
+lines(plotdf$x, rep(0, nrow(plotdf)), lty=1, col = "gray")
+  
+
+
+sz = 0.85
+mtext(text = "Water Year", side = 1, line = 0.5, outer = T, cex = sz)
+mtext(text = "Mean Water Year scPDSI", side = 2, line = -1.75, outer = T, cex = sz)
+dev.off()
+
+setwd("C:\\konrad\\USGS\\PROSPER_NHD\\data\\PDSI\\NETCDF")
 
 
 # Write files -------------------------------------------------------------

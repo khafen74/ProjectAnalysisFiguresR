@@ -11,6 +11,9 @@ raswy <- brick(fn)
 fn2 <- "C:\\konrad\\USGS\\PROSPER_NHD\\data\\csv\\crb_quads_scpdsi.csv"
 crbquads <- read.csv(fn2)
 
+fn3 <- "C:\\konrad\\USGS\\PROSPER_NHD\\data\\csv\\flow_permanence.csv"
+crbobs <- read.csv(fn3)
+
 setwd("C:\\konrad\\USGS\\PROSPER_NHD\\data\\PDSI\\wyTIFF")
 
 
