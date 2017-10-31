@@ -21,6 +21,9 @@ setwd("C:\\konrad\\USGS\\PROSPER_NHD\\data\\PDSI\\wyTIFF")
 
 years <- unique(crbquads$chck_year)
 years <- c(years, seq(2004,2016,1))
+
+#years of observations that I missed the first time
+#years <- c(1991,1992,1997,1998,1999,2001,2002,2003)
 years <- sort(years, decreasing = F)
 
 
