@@ -5,7 +5,7 @@ rm(list=ls())
 setwd("C:\\konrad\\USGS\\PROSPER_NHD\\data\\csv")
 
 fn <- "CRB_MR_PROSPER.csv"
-fn2 <- "pros_stitch.csv"
+fn2 <- "pros_stitch_diff.csv"
 
 nhd <- read.csv(fn)
 pros <- read.csv(fn2)
