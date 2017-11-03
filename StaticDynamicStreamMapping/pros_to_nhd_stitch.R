@@ -14,17 +14,15 @@ nhdpros <- merge(nhd[,1:19], pros, by = "REACHCODE")
 
 # Wet/dry classifications based on stitched data --------------------------
 
-nhdpros$stPerm <- ifelse(nhdpros$st_mean > nhdpros$th_mean.x, 1, 0)
+nhdpros$sppPerm <- ifelse(nhdpros$spp_mean > nhdpros$th_mean.x, 1, 0)
 nhdpros$nhdPerm <- ifelse((nhdpros$FCODE==46006 | nhdpros$FCODE==55800), 1, 0)
-nhdpros$misclass <- ifelse((((nhdpros$FCODE==46006 | nhdpros$FCODE==55800) & nhdpros$stPerm == 0) |
-                       ((nhdpros$FCODE==46003 | nhdpros$FCODE==46007 | nhdpros$FCODE==46000) &
-                          nhdpros$stPerm == 1)),1,0)
-nhdpros$miscalss <- ifelse(nhdpros$nhdPerm != nhdpros$stPerm, 1, 0)
-nhdpros$wetdry <- ifelse(nhdpros$stPerm == 0 & nhdpros$misclass == 1, 1, 0)
+
+nhdpros$misclass <- ifelse(nhdpros$nhdPerm != nhdpros$sppPerm, 1, 0)
+nhdpros$mistype <- ifelse(nhdpros$misclass == 1, 1+nhdpros$sppPerm, 0)
 
 
 # Subset columns ----------------------------------------------------------
 
-cols = c("REACHCODE", "st_mean", "th_mean.x", "stPerm", "nhdPerm", "misclass", "wetdry")
+cols = c("REACHCODE", "spp_mean", "th_mean.x", "sppPerm", "nhdPerm", "misclass", "mistype")
 dfprint = nhdpros[cols]
 write.csv(dfprint, "pros_class_stitch.csv", row.names = T)
